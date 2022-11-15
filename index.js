@@ -31,6 +31,7 @@ let lettersContainer = document.querySelector(".letters_container");
 let guessContainer = document.getElementById("guess_container");
 const API_URL = "https://random-word-api.herokuapp.com/word";
 let randomWord = '';
+let amountOfGuesses = document.getElementById('guesses-left');
 
 //fetch random word from API and create spaces for each letter
 
@@ -43,8 +44,8 @@ async function getWord(url) {
 const setData = async () => {
     randomWord = await getWord(API_URL);
     console.log('Word is: ', randomWord);
-    let amountOfGuesses = document.getElementById('num-of-guesses');
-    amountOfGuesses.innerHTML = 'Guesses left: ' + randomWord.length * 2;
+    
+    amountOfGuesses.innerHTML += randomWord.length * 2;
 
 
     let splitted = randomWord.split("");
@@ -59,7 +60,6 @@ const setData = async () => {
 setData();
 
 //Check letter choice to see if in word and at what location, if found display
-//if Correct => turn guess green, else turn red
 const checkChoice = (choice, word) => {
     let flag = false;
     let letters = document.getElementsByClassName("empty_space");
@@ -70,11 +70,19 @@ const checkChoice = (choice, word) => {
         if (currLetter.toLowerCase() === word[i]) {
             choice.className += " correct";
             flag = true;
-            console.log(letters)
             letters[i].innerHTML = currLetter;
         }
     }
-    if(!flag) choice.className += " wrong";
+
+    if(!flag){
+        choice.className += " wrong";
+        amountOfGuesses.innerHTML--;
+
+        if(amountOfGuesses.innerHTML === '0'){
+            alert('GAME OVER');
+        }
+    }
+        
     return flag;
 };
 

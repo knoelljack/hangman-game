@@ -56,7 +56,12 @@ body {
     background-color: red !important;
 }
 
-#num-of-guesses {
+#num-of-guesses-container {
     font-size: 1.5rem;
     margin-bottom: 2rem;
+    display: flex;
+}
+
+#guesses-left {
+
 }
