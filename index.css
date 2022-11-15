@@ -55,3 +55,8 @@ body {
 .wrong {
     background-color: red !important;
 }
+
+#num-of-guesses {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}

@@ -29,7 +29,6 @@ const alphabet = [
 
 let lettersContainer = document.querySelector(".letters_container");
 let guessContainer = document.getElementById("guess_container");
-let letters = document.getElementsByClassName("letters");
 const API_URL = "https://random-word-api.herokuapp.com/word";
 let randomWord = '';
 
@@ -44,13 +43,15 @@ async function getWord(url) {
 const setData = async () => {
     randomWord = await getWord(API_URL);
     console.log('Word is: ', randomWord);
+    let amountOfGuesses = document.getElementById('num-of-guesses');
+    amountOfGuesses.innerHTML = 'Guesses left: ' + randomWord.length * 2;
+
 
     let splitted = randomWord.split("");
 
     splitted.forEach((letter) => {
     let emptySpace = document.createElement("div");
     emptySpace.className = "empty_space";
-    // emptySpace.innerHTML = letter;
     guessContainer.appendChild(emptySpace);
     });
 }
@@ -60,18 +61,21 @@ setData();
 //Check letter choice to see if in word and at what location, if found display
 //if Correct => turn guess green, else turn red
 const checkChoice = (choice, word) => {
-//   console.log("Clicked", e.target.value);
-  for (let i = 0; i < word.length; i++) {
+    let flag = false;
+    let letters = document.getElementsByClassName("empty_space");
     let currLetter = choice.innerHTML;
-    if (currLetter.toLowerCase() === word[i]) {
-      choice.className += " correct";
-      console.log(letters)
-      lettersContainer[i].innerHTML = choice;
-      return true;
+
+
+    for (let i = 0; i < word.length; i++) {
+        if (currLetter.toLowerCase() === word[i]) {
+            choice.className += " correct";
+            flag = true;
+            console.log(letters)
+            letters[i].innerHTML = currLetter;
+        }
     }
-  }
-  choice.className += " wrong";
-  return false;
+    if(!flag) choice.className += " wrong";
+    return flag;
 };
 
 //create letters choices from alphabet array
@@ -82,3 +86,5 @@ alphabet.forEach((letter) => {
   curr.addEventListener('click', function() { checkChoice(curr, randomWord) });
   document.getElementById("letters_container").appendChild(curr);
 });
+
+
