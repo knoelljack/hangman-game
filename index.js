@@ -32,6 +32,7 @@ let guessContainer = document.getElementById("guess_container");
 const API_URL = "https://random-word-api.herokuapp.com/word";
 let randomWord = '';
 let amountOfGuesses = document.getElementById('guesses-left');
+let correctGuesses = 0;
 
 //fetch random word from API and create spaces for each letter
 
@@ -71,6 +72,11 @@ const checkChoice = (choice, word) => {
             choice.className += " correct";
             flag = true;
             letters[i].innerHTML = currLetter;
+            correctGuesses++;
+
+            if(correctGuesses === word.length) {
+                alert('YOU WIN')
+            }
         }
     }
 
